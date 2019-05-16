@@ -29,7 +29,6 @@ export class AppComponent {
     })
   }
   toggleFeature() {
-    console.log(this.ldService.client.variation('amex'));
     if (this.ldService.client.variation('amex')) {
       this.cards = Object.assign([], this.curveCards);
     } else {
