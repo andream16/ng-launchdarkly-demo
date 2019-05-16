@@ -28,16 +28,23 @@ export class AppComponent {
       return card.type != cardType;
     })
   }
+  toggleFeature() {
+    console.log(this.ldService.client.variation('amex'));
+    if (this.ldService.client.variation('amex')) {
+      this.cards = Object.assign([], this.curveCards);
+    } else {
+      this.cards = this.filterCards('american express');
+    }
+  }
 
   constructor(private ldService: AppService) {
-    console.log(this.ldService.client.variation('amex'));
-    if (this.ldService.client.variation('amex', false)) {
-        console.log('false');
-        this.cards = this.filterCards('american express');
-    } else {
-      console.log('true');
-      this.cards = Object.assign([], this.curveCards);
-    }
+    const self = this;
+    ldService.client.on('ready', function() {
+      self.toggleFeature();
+    });
+    ldService.client.on('change', function() {
+      self.toggleFeature();
+    });
   }
 
 }
